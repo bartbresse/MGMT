@@ -1,0 +1,1 @@
+Kijk nu in uw email voor de bevestiging van uw account.

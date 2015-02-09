@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>#subject#</title>
+	<link href="style.css" type="text/css" rel="stylesheet">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<style type="text/css">
+		table#email {
+			width:640px;
+			margin:0 auto;
+		}
+		#nieuwsbrief-banner-email {
+			margin-bottom: 20px;
+			position:relative;
+		}
+		#banner-overlay-email {
+			position: absolute;
+			top: 0px;
+			width: 100%;
+			max-width: 640px;
+			height: 53px;
+			background-color: rgba(255, 255, 255, 0.5);
+		}
+
+		#banner-overlay img{
+			margin-left:10px;
+		}
+		tr#email-bericht td{
+			padding-left:23px;
+			padding-right:23px;
+			padding-top:23px;
+		}
+		tr#email-bericht p {
+			font-size: 12px;
+			color: #313131;
+			line-height: 24px;
+		}
+		tr#email-bericht a{
+			font-size: 12px;
+			font-style: italic;
+			color: #ea5b0c;
+		}
+		tr#email-bericht h4{
+			font-size: 13px;
+			font-weight:bold;
+			font-style:italic;
+			color:#313131;
+			margin-bottom: 15px;
+		}
+	</style>
+</head>
+<body>
+	<table id="email">
+		<tr>
+			<td>
+				<img src="http://dev12-hetworks.nl/MGMT/backend/img/banner-email.jpg" alt="Family Factory nieuwsbrief" title="FamilyFactory" />
+			</td>
+		</tr>
+		<tr id="email-bericht">
+			<td>
+				<h4>Family Factory Houten heeft nieuws te melden!</h4>
+				<p>
+					#html#
+				</p>
+			</td>
+		</tr>
+	</table>
+</body>
+<html>

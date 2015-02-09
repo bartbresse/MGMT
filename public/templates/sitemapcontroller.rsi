@@ -1,0 +1,159 @@
+<?php
+
+use Models\Forum;
+
+use Phalcon\Http\Response;
+
+class SitemapController extends ControllerBase
+{
+	public $url;
+	public $lastmod;
+	
+	public function initialize() {
+		$this->view->disable();
+		$this->url = $this->tag->getUrlService()->getStaticBaseUri();
+		
+		$this->lastmod = '2014-05-12';
+	}
+
+	public function responseheader()
+	{
+		$response = new Response();
+
+        $expireDate = new \DateTime();
+        $expireDate->modify('+1 day');
+
+        $response->setExpires($expireDate);
+
+        $response->setHeader('Content-Type', "application/xml; charset=UTF-8");
+
+        return $response;
+	}
+	
+	public function sitemapheader()
+	{
+		$sitemap = new \DOMDocument("1.0", "UTF-8");
+		
+		$xslt = $sitemap->createProcessingInstruction('xml-stylesheet', 'type="text/xsl" href="'.$this->url.'css/xml-sitemap.xsl"');
+		
+		$sitemap->appendChild($xslt);
+		
+		return $sitemap;	
+	}
+	
+	private function getentities()
+	{
+		$controllers = Controller::find();	
+		foreach($controllers as $controller)
+		{
+			foreach($controller->Controllerview as $view)
+			{
+				if($view->struct == 1 && count($view->Entity) > 0)
+				{
+					//push to a new structure sitemap
+					$cc=0;
+					foreach($view->Entity as $entity)
+					{						
+						if($cc == 0)
+						{
+							array_push($entities,$entity->title);
+						}
+					}
+					$cc++;
+				}
+			}
+		}
+		return $entities;
+	}
+	
+    public function indexAction()
+    {
+		$response = $this->responseheader();
+		$sitemap = $this->sitemapheader();
+		
+        $urlset = $sitemap->createElement('sitemapindex');
+        $urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+
+		$url = $sitemap->createElement('sitemap');
+		$url->appendChild($sitemap->createElement('loc', $this->url . 'sitemap-paginas.xml'));
+        $url->appendChild($sitemap->createElement('lastmod', $this->lastmod));
+		$urlset->appendChild($url);
+		
+		$entities = $this->getentities();
+		
+		foreach($entities as $entity)
+		{
+			$entity = Entity::find(array('conditions' => 'title = "'.$entity.'"','order' => 'lastmod DESC'));	
+
+			$view = Controllerview('id = "'.$entity->viewid.'"'); 
+			
+			$datetime = explode(' ',$view->lastmod);
+			
+			$url = $sitemap->createElement('sitemap');
+			$url->appendChild($sitemap->createElement('loc', $this->url . 'sitemap-'.$entity->title.'.xml'));
+			$url->appendChild($sitemap->createElement('lastmod', $datetime[0]));
+			$urlset->appendChild($url);		
+		}
+		
+		$sitemap->appendChild($urlset);
+		$response->setContent($sitemap->saveXML());
+        return $response;
+	}
+	
+	public function paginaAction()
+	{
+		//https://productforums.google.com/forum/#!topic/webmasters/1wgcXORXsJw
+		//What use is lastmod
+		$response = $this->responseheader();
+		$sitemap = $this->sitemapheader();
+		$urlset = $sitemap->createElement('urlset');
+		$urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');	
+		$pages = Controllerview::find('struct = 0');
+		foreach($pages as $page)
+		{
+			$urlt = $page->controller->controllername.'/'.$page->title.'/';
+			$date = explode(' ',$page->lastedit);
+			$url = $sitemap->createElement('url');
+			$url->appendChild($sitemap->createElement('loc', $urlt));
+			$url->appendChild($sitemap->createElement('priority', '1'));
+			$url->appendChild($sitemap->createElement('lastmod', $date[0]));
+			$url->appendChild($sitemap->createElement('changefreq', 'weekly'));
+			$urlset->appendChild($url);
+		}
+		$sitemap->appendChild($urlset);
+		$response->setContent($sitemap->saveXML());
+		return $response;		
+	}
+	
+	public function entityAction($entity)
+	{
+		$response = $this->responseheader();
+		$sitemap = $this->sitemapheader();
+		$urlset = $sitemap->createElement('urlset');
+		$urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+		
+		$Entity = ucfirst($entity);
+		
+		$results = $Entity::find();
+		foreach ($results as $result)
+		{
+			if(strlen($result->slug) > 3)
+			{
+				$loc = BASEURL.$entity.'/'.$result->slug;
+				$lastmod = $result->lastedit;
+				
+				$url = $sitemap->createElement('url');
+				$url->appendChild($sitemap->createElement('loc', $loc));
+				$url->appendChild($sitemap->createElement('priority', '0.4'));				
+				$url->appendChild($sitemap->createElement('changefreq', 'weekly'));
+				$url->appendChild($sitemap->createElement('lastmod', date('Y-m-d',$lastmod)));
+				$urlset->appendChild($url);
+			}
+		}
+		
+		$sitemap->appendChild($urlset);
+		$response->setContent($sitemap->saveXML());
+		return $response;	
+	}
+}
+

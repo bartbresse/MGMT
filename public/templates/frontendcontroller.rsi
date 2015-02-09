@@ -1,0 +1,21 @@
+<?php
+use Phalcon\Forms\Form,
+    Phalcon\Forms\Element\Text,
+    Phalcon\Forms\Element\Textarea,
+    Phalcon\Forms\Element\Select;
+
+use Phalcon\Validation\Validator\PresenceOf,
+	Phalcon\Validation\Validator\Email,
+	Phalcon\Validation\Validator\StringLength;
+
+class #Entity#Controller extends ControllerBase
+{
+    public function initialize()
+    {
+        $this->view->setTemplateAfter('main');
+        Phalcon\Tag::setTitle('#Entity#s');
+        parent::initialize();
+    }
+	#pages#
+}
+?>

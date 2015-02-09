@@ -1,0 +1,142 @@
+<div class="logo" style="top:0px;margin-top:0px;padding-top:0px;">
+	<a href="http://www.hetworks.nl">
+		<img style="width:200px;" src="<?=$this->url->get('img/logo.png');?>" />
+	</a>
+</div>
+
+<header class="page-header">
+        <div class="navbar">
+                <ul class="nav navbar-nav navbar-right pull-right">
+                    <li class="visible-phone-landscape">
+                        <a href="#" id="search-toggle">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </li>
+
+                    <li class="divider"></li>
+
+                    <li class="hidden-xs">
+                        <a href="<?php echo  $this->url->get('settings'); ?>" id="settings"
+                           title="Settings"
+                           data-toggle="popover"
+                           data-placement="bottom">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                    </li>
+
+                    <li class="hidden-xs dropdown">
+                        <a href="#" title="Account" id="account"
+                           class="dropdown-toggle"
+                           data-toggle="dropdown">
+                            <i class="fa fa-user"></i>
+                        </a>
+                        <ul id="account-menu" class="dropdown-menu account" role="menu">
+                            <li role="presentation" class="account-picture">
+                                <img src="img/2.jpg" alt="">
+                               <?
+									$session = $this->session->get('auth');
+									echo $session['username'];
+								?>
+                            </li>
+                            <li role="presentation">
+                                <a href="<?=$this->url->get('user/view?id='.$session['id']);?>" class="link">
+                                    <i class="fa fa-user"></i>
+                                    Profile
+                                </a>
+                            </li>
+<!--                        <li role="presentation">
+                                <a href="component_calendar.html" class="link">
+                                    <i class="fa fa-calendar"></i>
+                                    Calendar
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#" class="link">
+                                    <i class="fa fa-inbox"></i>
+                                    Inbox
+                                </a>
+                            </li>-->
+                        </ul>
+                    </li>
+                    <li class="visible-xs">
+                        <a href="#"
+                           class="btn-navbar"
+                           data-toggle="collapse"
+                           data-target=".sidebar"
+                           title="">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </li>
+                    <li class="hidden-xs"><a href="<?=$this->url->get('session/end');?>"><i class="fa fa-sign-out"></i></a></li>
+                </ul>
+                <form id="search-form" class="navbar-form pull-right" role="search">
+                    <input type="search" class="search-query" placeholder="Search...">
+                </form>
+        </div>
+    </header>
+
+<nav id="sidebar" class="sidebar nav-collapse collapse">
+    <ul id="side-nav" class="side-nav">
+        <li>
+            <a href="<?php echo  $this->url->get(); ?>"><i class="fa fa-home"></i> <span class="name">Dashboard</span></a>
+        </li>
+        <li class="panel">
+            <a class="accordion-toggle collapsed" data-toggle="collapse"
+               data-parent="#side-nav" href="#tables-collapse"><i class="fa fa-table"></i> <span class="name">Gebruikers</span></a>
+            <ul id="tables-collapse" class="panel-collapse collapse">
+                <li><a href="<?php echo  $this->url->get(); ?>user/">Overzicht</a></li>
+                <li><a href="<?php echo  $this->url->get(); ?>user/new">Nieuw</a></li>
+            </ul>
+        </li>
+		<li class="panel">
+            <a class="accordion-toggle collapsed" data-toggle="collapse"
+               data-parent="#side-nav" href="#plaatsen-collapse"><i class="fa fa-table"></i> <span class="name">Plaatsen</span></a>
+            <ul id="plaatsen-collapse" class="panel-collapse collapse">
+                <li><a href="<?php echo  $this->url->get(); ?>category/&niveau=2">Overzicht</a></li>
+				<? if($auth['clearance'] > 800){ ?>
+				<li><a href="<?php echo  $this->url->get(); ?>category/newplaats">Nieuwe plaats</a></li>
+				<? } ?>
+			</ul>
+        </li>
+		<li class="panel">
+            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#side-nav" href="#teams-collapse"><i class="fa fa-table"></i> <span class="name">Teams</span></a>
+            <ul id="teams-collapse" class="panel-collapse collapse">
+				<li><a href="<?php echo  $this->url->get(); ?>category/&niveau=3">Overzicht</a></li> 
+			<? $plaatsbeheerder = false;			
+				if($auth['clearance'] > 800 || $plaatsbeheerder){ ?>  
+				<li><a href="<?php echo  $this->url->get(); ?>category/newteam">Nieuw team</a></li>
+            <? } ?>
+			</ul>
+        </li>
+		
+		
+
+		<?	//THE NEW AND IMPROVED MENU FUNCTIONS
+			//TODO:MULTILANG (:
+			$auth = $this->session->get('auth');
+			foreach($tables as $table)
+			{
+				if($table->clearance < $auth['clearance'])
+				{  
+					?> 
+					<li class="panel">
+						<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#side-nav" href="#<?=$table->slug;?>-collapse">
+							<i class="fa fa-table"></i> 
+							<span class="name"><?=$table->alias;?></span>
+						</a>
+						<ul id="<?=$table->slug;?>-collapse" class="panel-collapse collapse">
+							<li><?php echo $this->tag->linkTo(array($table->slug."/index", "Overzicht")); ?></li>
+							<li><?php echo $this->tag->linkTo(array($table->slug."/new", "Nieuwe ".$table->titel)); ?></li>
+						</ul>
+					</li> 
+					<?
+				}
+			}
+		?>
+
+    </ul>
+</nav>
+
+<div id="general-content" class="">
+	{{ content() }}
+</div>

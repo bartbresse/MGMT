@@ -1,0 +1,12 @@
+<div id="menu">
+	#menuitems#
+</div>
+<div id="search">
+	<input onchange="search(this.value);" type="text" placeholder="Vul hier uw zoekopdracht in..." />
+</div>
+<div class="container">
+    {{ content() }}
+</div>
+<footer>
+	#entities#
+</footer>

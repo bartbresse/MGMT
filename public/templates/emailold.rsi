@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+
+		<title>#subject#</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	</head>
+	<body>
+		<table style="width:100%">
+			<tr><td><img src="http://hetworks.nl/wordpress/wp-content/themes/hetworks/images/logo.png"></td><td></td></tr>
+		</table>
+		#html#		
+	</body>
+	<footer style="background-color:#DDD;">
+	<table style="width:100%">
+		<tr><td><a href="http://localhost/MGMT/">Ga naar mgmt.nl</a></td><td>HETWORKS 2014</td></tr>
+	</table>
+	</footer>	
+</html>

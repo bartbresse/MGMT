@@ -1,0 +1,381 @@
+<?php
+use Phalcon\Forms\Form,
+    Phalcon\Forms\Element\Text,
+    Phalcon\Forms\Element\Textarea,
+    Phalcon\Forms\Element\Select,
+	Phalcon\Forms\Element\Password;
+
+use Phalcon\Validation\Validator\PresenceOf,
+	Phalcon\Validation\Validator\Email,
+	Phalcon\Validation\Validator\StringLength;
+
+class #Entity#Controller extends ControllerBase
+{
+    public function initialize()
+    {
+        $this->view->setTemplateAfter('entity');
+        parent::initialize();
+		Phalcon\Tag::setTitle($this->lang->translate('#Entity#s'));
+	}
+
+    public function indexAction()
+    {		
+		//$actions = array('edit','delete');	
+		$get = $this->request->getQuery();
+		
+		$actions = $this->actionauth('#Entity#');
+		$this->view->setVar("actions", $actions);		
+
+		$table = Column::findFirst('entity = "#entity#"');
+		if(isset($table->columns)){ $columns = $table->columns;	 }else{ $columns = array("#firstcolumn#"); }
+		$this->view->setVar("columns", $columns);	
+		
+		$allcolumns = array(#columns#);
+		$this->view->setVar("allcolumns", $allcolumns);	
+	
+		
+	
+		$columns = array(#searchcolumns#);		
+		$#entity#s = $this->search($columns,'#Entity#'); 
+		if(count($#entity#s) > 0){ $this->view->setVar("#entity#s", $#entity#s); }
+	}
+	
+	public function cleanAction()
+	{
+		$this->view->disable();
+		$post = $this->request->getPost();
+		
+		$actions = $this->actionauth('Bericht');
+		$this->view->setVar("actions", $actions);		
+
+		$table = Column::findFirst('entity = "#entity#"');
+		if(isset($table->columns)){ $columns = $table->columns;	 }else{ $columns = array("#firstcolumn#"); }
+		$this->view->setVar("#entity#columns", $columns);	
+		
+		$allcolumns = array(#columns#);
+		$this->view->setVar("allcolumns", $allcolumns);	
+		$columns = array(#searchcolumns#);		
+		
+		if(isset($post['field']) && isset($post['value']))
+		{
+			$args = $post['field'].' = "'.$post['value'].'"';
+		}
+		
+		$#entity#s = $this->search($columns,'#Entity#',$args); 
+		if(count($#entity#s) > 0){ $this->view->setVar("index#entity#s", $#entity#s); }		
+		$this->view->partial("#entity#/clean"); 	
+	}
+	
+	public function sortAction()
+	{
+		$this->view->disable();
+		$status = array('status' => 'false','messages' => array());	
+		if ($this->request->isPost()) 
+		{
+			$actions = array('edit','delete');
+			$post = $this->request->getPost();
+			$allcolumns = array(#columns#);
+			$table = Column::findFirst('entity = "#entity#"');
+			$columns = $table->columns;		
+
+			$this->view->setVar("actions", $actions);
+			$this->view->setVar("allcolumns", $allcolumns);	
+			$this->view->setVar("#entity#columns", $columns);	
+
+			$args['entity'] = '#entity#';
+			$args['columns'] = array(#searchcolumns#);
+			$args['order'] = $post['order'];
+			$args['search'] = $post['search'];				
+			
+			$users = $this->search2($args); 
+			if(count($users) > 0)
+			{ 
+				$this->view->setVar("index#entity#s", $users); 
+			}
+
+			//sort post. used to remember the sorted column
+			$sort = explode(' ',$post['order']);
+			$post['key'] = $sort[0];
+			$post['order'] = $sort[1];
+			$this->view->setvar("post", $post);
+			$this->view->partial("#entity#/clean"); 	
+		}
+	}
+
+	public function templateAction() 
+	{
+		$this->view->disable();
+		$status = array('status' => 'false','messages' => array());	
+		if ($this->request->isPost()) 
+		{
+			$post = $this->request->getPost();
+			$form = new Form();
+		
+			if(isset($post['id']))
+			{	
+				$#entity# = #Entity#::findFirst('id = "'.$post['id'].'"');
+			}
+			else
+			{
+				$#entity# = #Entity#::findFirst();
+			}	
+		
+			$cm = $#entity#->columnMap();
+		
+			$this->view->setVar("#entity#", $#entity#);
+		
+			foreach($cm as $column)
+			{ $form->add(new Text($column, array('value' => $#entity#->$column,'id' => $column,'class' => $post['template'].'-control'))); }	
+
+			//TODO add special fields
+			$form->add(new Textarea("html", array("id" => "html","class" => $post['template']."-control")));
+			$form->add(new Textarea("footer", array("id" => "footer","class" => $post['template']."-control")));
+
+			$templates = Template::find();
+			$this->view->setVar("templates", $templates);
+			$this->view->setVar("form", $form);
+		
+			$entityid = $this->uuid();
+			$this->view->setVar("entityid", $entityid);
+			$this->view->partial("file/".$post['template']); 	
+		}
+	}
+
+	public function updateAction()
+	{
+		$this->view->disable();
+		$status = array('status' => 'false','messages' => array());	
+		if ($this->request->isPost()) 
+		{
+			$post = $this->request->getPost();
+
+			$#entity# = #Entity#::findFirst('id = "'.$post['id'].'"');
+			
+			//save standard columns 
+			foreach ($#entity# as $key => $value)
+			{
+				if(isset($post[$key]) && $key != 'id' && $key != 'fileid')
+				{ 
+					$user->$key = $post[$key]; 
+				}				
+			}		
+			if($#entity#->save())
+			{
+				$status['status'] = 'ok';
+			}
+			else
+			{
+				foreach ($#entity#->getMessages() as $message)
+				{
+				//	echo $message;
+				}
+			}		
+		}
+		echo json_encode($status);
+	}
+
+
+	public function editAction()
+	{
+		$form = new Form();
+		
+		$id = $this->request->getQuery('id');
+
+		$#entity# = #Entity#::findFirst('id = "'.$id.'"');
+		$cm = $#entity#->columnMap();
+		
+		$this->view->setVar("#entity#", $#entity#);
+		
+		#editrelations#
+		
+		foreach($cm as $column)
+		{ $form->add(new Text($column, array('value' => $#entity#->$column,'id' => $column,'class' => 'form-control'))); }	
+		
+		//TODO add special fields
+		#specialfields#	
+
+		
+		#widgetsedit#
+		
+		
+		
+		$this->view->setVar("form", $form);
+		$this->view->pick("#entity#/new");	
+	}
+
+	public function newAction()
+	{
+		$form = new Form();
+		$session = $this->session->get('auth');
+
+		$#entity# = #Entity#::findFirst();
+		if(!isset($#entity#->id))
+		{
+			$#entity# = new #Entity#();
+			$#entity#->userid = $session['id'];
+		}
+		
+		$cm = $#entity#->columnMap();
+		foreach($cm as $column)
+		{ $form->add(new Text($column, array('id' => $column,'class' => 'form-control'))); }	
+		
+		//TODO add special fields
+		#specialfields#		
+		
+		$entityid = $this->uuid();
+		$this->view->setVar("entityid", $entityid);
+		
+		#linkrelations#
+		
+		#widgetsnew#
+		
+		$this->view->setVar("form", $form);
+	}
+
+	public function addAction()
+	{
+		$this->view->disable();
+		$status = array('status' => 'false','messages' => array());	
+		if ($this->request->isPost()) 
+		{
+			$post = $this->request->getPost();
+
+			$validation = new Phalcon\Validation();
+	
+			#filters# 
+
+			#checks#
+
+			$messages = $validation->validate($post);
+			if (count($messages))
+			{
+				for($i=0;$i<count($messages);$i++){
+				$message[$messages[$i]->getField()] = $messages[$i]->getMessage();
+				array_push($status['messages'],$message); }
+			}
+			else
+			{
+				$new = false;
+				$#entity#x = #Entity#::findFirst('id = "'.$post['id'].'"'); 
+				if(!isset($#entity#x->id))
+				{ 		 
+					$#entity# = new #Entity#();
+					if(strlen($post['id']) < 5){ $#entity#->id = $this->uuid(); }else{ $#entity#->id = $post['id']; }
+					$new = true;
+				}
+				else
+				{
+					$#entity# = $#entity#x;
+				}
+				
+				//save standard columns 
+				foreach ($#entity# as $key => $value)
+				{
+					if(isset($post[$key]) && $key != 'id' && $key != 'fileid')
+					{ 
+						$#entity#->$key = $post[$key]; 
+					}				
+				}
+				
+				#addfields#		
+				
+				$cc=0;	
+				if(!isset($post['id']) || strlen($post['id']) < 10)
+				{
+					$messages = $#entity#->validation();
+					for($i=0;$i<count($messages);$i++)
+					{
+						$message[$messages[$i]->getField()] = $messages[$i]->getMessage();
+						array_push($status['messages'],$message);
+						$cc++;
+					}
+				}	
+
+				#widgetsadd#	
+				
+				if($#entity#->save() && $cc==0)
+				{
+					$status['status'] = 'ok';
+				}
+				else
+				{
+					foreach ($#entity#->getMessages() as $message)
+					{
+						//	echo $message;
+					}
+				}		
+			}
+		}
+		echo json_encode($status);
+	}
+
+	public function deleteAction()
+	{
+		$this->view->disable();
+		$status = array('status' => 'false');	
+		if ($this->request->isPost()) 
+		{
+			$post = $this->request->getPost();
+			$#entity# = #Entity#::findFirst('id = "'.$post['id'].'"');
+			if($#entity#->delete())
+			{
+				$status['status'] = 'ok';
+			}
+		}
+		echo json_encode($status);
+	}
+
+	public function viewAction()
+	{
+		$form = new Form();
+	
+		$id = $this->request->getQuery('id');
+
+		$#entity# = #Entity#::findFirst('id = "'.$id.'"');
+		$this->view->setVar("#entity#", $#entity#);
+		$this->view->setVar("entityid", $#entity#->id);
+		
+		$tabs = array(#tabs#);
+		$this->view->setVar("tabs", $tabs);
+		
+		#widgetsview#
+		
+		#relations#
+		
+		$this->view->setVar("form", $form);
+	}
+
+	public function exportAction()
+	{
+		$this->view->disable();
+		$status = array('status' => 'false');	
+		if ($this->request->isPost()) 
+		{
+			$actions = array('edit','delete');
+			$post = $this->request->getPost();
+			$allcolumns = array(#columns#);
+			$table = Column::findFirst('entity = "#entity#"');
+			$columns = $table->columns;		
+
+			$args['entity'] = '#entity#';
+			$args['columns'] = array(#searchcolumns#);
+			$args['order'] = $post['order'];
+			$args['search'] = $post['search'];				
+			$args['rows'] = 1000000;	
+			
+			$#entity#s = $this->search2($args); 
+
+			if(count($#entity#s) > 0)
+			{ 				
+				$status['goto'] = $this->csv($#entity#s,$columns,'#entity#');		
+				$status['status'] = 'ok';		
+			}
+		}
+		echo json_encode($status);
+	}
+
+
+	#userspecific#
+
+}
+?>

@@ -1,0 +1,79 @@
+<div class="navbar navbar-default">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="navbar-brand" href="<?=$this->url->get('index/index');?>">CONSTRUCT</a>  	
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+				  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gebruikers<b class="caret"></b></a>
+				  <ul class="dropdown-menu">
+					<li><?php echo $this->tag->linkTo(array("user/index", "Overzicht")); ?></li>
+					<li><?php echo $this->tag->linkTo(array("user/new", "Nieuwe gebruiker")); ?></li>
+				  </ul>
+				</li>
+				
+				<li class="panel">
+					<a class="accordion-toggle collapsed" data-toggle="collapse"
+					   data-parent="#side-nav" href="#category-collapse"><i class="fa fa-table"></i> <span class="name">Category</span></a>
+					<ul id="category-collapse" class="panel-collapse collapse">
+					    <li><a href="<?php echo  $this->url->get(); ?>category/">Overzicht</a></li>		
+					    <li><a href="<?php echo  $this->url->get(); ?>category/new">Nieuw</a></li>
+					</ul>
+				</li>
+			</ul>	
+			<?	//THE NEW AND IMPROVED MENU FUNCTIONS
+				//TODO:MULTILANG (:
+				$auth = $this->session->get('auth');
+				foreach($tables as $table)
+				{
+					if($table->clearance < $auth['clearance'])
+					{  
+						?>
+						<li class="dropdown">
+						  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?=$table->alias;?><b class="caret"></b></a>
+						  <ul class="dropdown-menu">
+							<li><?php echo $this->tag->linkTo(array($table->slug."/index", "Overzicht")); ?></li>
+							<li><?php echo $this->tag->linkTo(array($table->slug."/new", "Nieuwe gebruiker")); ?></li>
+						  </ul>
+						</li>
+						<?
+					}
+				}
+			?>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="navbar-right">
+					<?php echo $this->tag->linkTo(array("session/logout", "Uitloggen")); ?>
+				</li>
+			</ul>
+
+			<script>
+				function search(value)
+				{
+					window.location.href='<?=$this->url->get();?>{{router.getRewriteUri() }}&q='+value;
+				}
+				function reset(value)
+				{
+					window.location.href='<?=$this->url->get();?>{{router.getRewriteUri() }}';
+				}		
+			</script>
+			<div class="navbar-form navbar-right" role="search">
+				<div class="form-group">
+					  <input type="text" onchange="search(this.value)" class="form-control" placeholder="Zoeken...">
+					  <? $q = $this->request->getQuery('q'); if(strlen($q) > 0){ ?><a onclick="reset();">Reset</a><? } ?>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    {{ content() }}
+    <hr>
+    <footer>
+        <p>&copy; Company 2012</p>
+    </footer>
+</div>

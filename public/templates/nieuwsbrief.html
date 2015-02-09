@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Nieuwsbrief FamilyFactory</title>
+	<link href="style.css" type="text/css" rel="stylesheet">
+	<style type="text/css">
+/* ----------Nieuwsbrief styling ----------*/
+#nieuwsbrief{
+	width:640px;
+	height:100%;
+	margin:0 auto;
+}
+
+#topheader-nieuwsbrief{
+	height: 23px;
+	width: 100%;
+	padding-top: 10px;
+}
+
+#topheader-nieuwsbrief .left a {
+	font-size: 12px;
+	margin-left: 20px;
+	font-family: Arial;
+	color: #000000;
+}
+
+#topheader-nieuwsbrief .right  a{
+	font-size: 12px;
+	color: #000;
+	margin-right: 20px;
+	font-family: Arial;
+}
+
+#nieuwsbrief-banner {
+	margin-bottom: 20px;
+	position:relative;
+}
+
+#banner-overlay {
+	position: absolute;
+	top: 33px;
+	width: 100%;
+	max-width: 640px;
+	height: 53px;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+#banner-overlay img{
+	margin-left:10px;
+}
+
+#banner-overlay-email {
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	max-width: 640px;
+	height: 53px;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+#banner-overlay-email img{
+	margin-left:10px;
+}
+
+
+#nieuwsbrief-groot {
+	padding-bottom: 35px;
+	border-bottom: 4px solid #f2f8fb;
+}
+
+.nieuwsbrief-afbeelding {
+	margin: 0px 16px 0px 14px;
+	float:left;
+	height:210px;
+}
+
+.nieuwsbrief-tekst p {
+	font-size: 12px;
+	color: #313131;
+	line-height: 24px;
+}
+
+.nieuwsbrief-tekst a{
+	font-size: 12px;
+	font-style: italic;
+	color: #ea5b0c;
+}
+
+.nieuwsbrief-tekst h2{
+	font-size: 16px;
+	font-weight:bold;
+	color:#ea5b0c;
+	margin-bottom: 20px;
+}
+
+.nieuwsbrief-tekst h4{
+	font-size: 13px;
+	font-weight:bold;
+	font-style:italic;
+	color:#313131;
+	margin-bottom: 15px;
+}
+
+#berichten-nieuwsbrief {
+	float:left;
+	width:311px;
+	height:100%;
+	margin-top:15px;
+}
+
+#agenda-nieuwsbrief  {
+	float:right;
+	width:311px;
+	height:100%;
+	margin-top:15px;
+}
+
+.nieuwsbrief-header-blue, .nieuwsbrief-header-red{
+	float: left;
+	width: 100%;
+	padding-bottom: 16px;
+}
+
+.nieuwsbrief-header-blue h3{
+	font-size: 24px;
+	font-weight: bold;
+	color: #0079b5;
+	float:left;
+}
+
+.nieuwsbrief-header-blue a, .nieuwsbrief-header-red a{
+	font-weight: 300;
+	font-size: 12px;
+	color: #414140;
+	margin-top: 7px;
+	float: right;
+}
+
+.nieuwsbrief-header-red h3{
+	font-size: 24px;
+	font-weight: bold;
+	color: #e72557;
+	float:left;
+}
+
+.nieuwsbrief-bericht {
+	float:left;
+	width:297px;
+	height:115px;
+	border-top: 1px solid #bfbfbf;
+	padding:9px 10px 13px 4px
+}
+
+.nieuwsbrief-bericht:last-of-type {
+	border-bottom: 1px solid #bfbfbf;
+}
+
+.bericht-header-blue, .bericht-header-oranje {
+	float:left;
+	width:100%;
+	margin-bottom: 13px;
+}
+
+.bericht-header-blue h3{
+	font-weight:bold;
+	font-size: 16px;
+	color:#0079b5;
+}
+
+.bericht-header-oranje h3{
+	font-weight:bold;
+	font-size: 16px;
+	color:#ea5b0c;
+}
+
+.nieuwsbericht-afbeelding {
+	float:left;
+	margin-right: 10px;
+}
+
+.nieuwsbericht a{
+	font-size: 12px;
+	color: #ea5b0c;
+}
+
+.nieuwsbericht p{
+	font-size: 12px;
+	color: #313131;
+	line-height: 24px;
+}
+
+#berichten-agenda-nieuwsbrief {
+	padding-bottom: 25px;
+	border-bottom: 4px solid #f2f8fb;
+}
+
+#nieuwsbrief-footer {
+	height:49px;
+	width:100%;
+}
+
+#nieuwsbrief-footer .left, #nieuwsbrief-footer #social {
+	margin-top: 17px;
+}
+
+#nieuwsbrief-footer .left p {
+	font-size: 12px;
+	font-family: Arial;
+	color: #000;
+}
+
+#nieuwsbrief-footer .left a {	
+	font-size: 12px;
+	font-family: Arial;
+	color: #dc0714;
+	margin-top:17px;
+}
+
+#nieuwsbrief-footer .right p{	
+	font-size: 12px;
+	font-family: Arial;
+	color: #dc0714;
+	float:left;
+	margin-top:5px;
+}
+
+#social {
+	width:140px;
+}
+
+#social img {
+	margin-left:10px;
+}
+
+.email-pad {
+	padding-left:23px;
+	padding-right:23px;
+}
+
+.noborder {
+	border-bottom:none!important;
+}
+
+/* ----------Einde nieuwsbrief styling ----------*/	
+	</style>
+</head>
+<body>
+		<table>
+			<tr>
+				<td>
+				<a href="<?php bloginfo('url'); ?>" target="_blank">
+					Bekijk deze e-mail in uw browser
+				</a>
+				</td>
+				<td>
+					<a href="<?php bloginfo('url'); ?>" target="_blank">
+						September 2014
+					</a>
+				</td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td>
+					<img src="http://dev12-hetworks.nl/MGMT/backend/img/nieuwsbrief-banner2.jpg" alt="Family Factory nieuwsbrief" title="FamilyFactory" />
+				</td>
+			</tr>
+		</table>
+		
+		<table style="width:650px;">
+			<tr>
+				<td style="vertical-align:top">
+					<img src="http://dev12-hetworks.nl/MGMT/backend/img/nieuwsgroot-afbeelding.jpg" alt="" title="" />
+				</td>
+				<td>
+					<h2>Family Factory Houten heeft nieuws te melden!</h2>
+					<p>
+						Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugitunt. 
+						Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, ed quia non numquam eius modi tempora incidunt ut labore et dolore magnam. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugitunt. 				
+						&nbsp;<a href="#">Lees meer</a>
+				</p>
+				</td>
+			</tr>
+		</table>
+		
+		
+		<table>
+			<tr>
+				<td>
+		
+		<table>
+			<tr>	
+			
+			<td>
+				<table>
+					<tr>
+					<td>
+						<h3>
+							Berichten
+						</h3>
+					</td>
+					<td>
+						<a href="#" target="_blank">
+							Bekijk alle berichten
+						</a>
+					</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+			<tr>			
+				<td>
+
+
+				<table style="width:300px;">
+					<tr>
+					<td colspan="2">
+						<div class="bericht-header-blue">
+							<h3>
+								Sociaal leven voor kinderen
+							</h3>
+						</div>
+					</td>
+					</tr>					
+					<tr>
+					<td>
+						<div class="nieuwsbericht-afbeelding">
+							<img src="http://dev12-hetworks.nl/MGMT/backend/img/groenbrief.jpg" alt="" title="" />
+						</div>
+					</td>
+					
+					<td>
+						<div class="nieuwsbericht">
+							<p>
+								Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia						
+								<a href="#">Lees meer</a>
+							</p>
+						</div>
+					</td>
+					</tr>
+				</table>
+
+
+				
+				</td>
+			</tr>
+			<tr>		
+				<td>
+				
+				
+					<table style="width:300px;">
+					<tr >
+					<td  colspan="2">
+						<div class="bericht-header-blue">
+							<h3>
+								Sociaal leven voor kinderen
+							</h3>
+						</div>
+					</td>
+					</tr>					
+					<tr>
+					<td>
+						<div class="nieuwsbericht-afbeelding">
+							<img src="http://dev12-hetworks.nl/MGMT/backend/img/groenbrief.jpg" alt="" title="" />
+						</div>
+					</td>
+					
+					<td>
+						<div class="nieuwsbericht">
+							<p>
+								Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia						
+								<a href="#">Lees meer</a>
+							</p>
+						</div>
+					</td>
+					</tr>
+				</table>
+				
+				
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+					
+						<table style="width:300px;">
+					<tr >
+					<td colspan="2">
+						<div class="bericht-header-blue">
+							<h3>
+								Sociaal leven voor kinderen
+							</h3>
+						</div>
+					</td>
+					</tr>					
+					<tr>
+					<td>
+						<div class="nieuwsbericht-afbeelding">
+							<img src="http://dev12-hetworks.nl/MGMT/backend/img/groenbrief.jpg" alt="" title="" />
+						</div>
+					</td>
+					
+					<td>
+						<div class="nieuwsbericht">
+							<p>
+								Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia						
+								<a href="#">Lees meer</a>
+							</p>
+						</div>
+					</td>
+					</tr>
+				</table>
+					
+
+				</td>
+			</tr>
+			</table>
+				
+				</td>
+				<td>
+			
+			
+			
+		<table>
+			<tr>	
+			
+			<td>
+				<table>
+					<tr>
+					<td>
+						<h3>
+							Berichten
+						</h3>
+					</td>
+					<td>
+						<a href="#" target="_blank">
+							Bekijk alle berichten
+						</a>
+					</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+			<tr>			
+				<td>
+
+
+				<table style="width:300px;">
+					<tr>
+					<td colspan="2">
+						<div class="bericht-header-blue">
+							<h3>
+								Sociaal leven voor kinderen
+							</h3>
+						</div>
+					</td>
+					</tr>					
+					<tr>
+					<td>
+						<div class="nieuwsbericht-afbeelding">
+							<img src="http://dev12-hetworks.nl/MGMT/backend/img/groenbrief.jpg" alt="" title="" />
+						</div>
+					</td>
+					
+					<td>
+						<div class="nieuwsbericht">
+							<p>
+								Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia						
+								<a href="#">Lees meer</a>
+							</p>
+						</div>
+					</td>
+					</tr>
+				</table>
+
+
+				
+				</td>
+			</tr>
+			<tr>		
+				<td>
+				
+				
+					<table style="width:300px;">
+					<tr >
+					<td  colspan="2">
+						<div class="bericht-header-blue">
+							<h3>
+								Sociaal leven voor kinderen
+							</h3>
+						</div>
+					</td>
+					</tr>					
+					<tr>
+					<td>
+						<div class="nieuwsbericht-afbeelding">
+							<img src="http://dev12-hetworks.nl/MGMT/backend/img/groenbrief.jpg" alt="" title="" />
+						</div>
+					</td>
+					
+					<td>
+						<div class="nieuwsbericht">
+							<p>
+								Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia						
+								<a href="#">Lees meer</a>
+							</p>
+						</div>
+					</td>
+					</tr>
+				</table>
+				
+				
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+					
+						<table style="width:300px;">
+					<tr >
+					<td colspan="2">
+						<div class="bericht-header-blue">
+							<h3>
+								Sociaal leven voor kinderen
+							</h3>
+						</div>
+					</td>
+					</tr>					
+					<tr>
+					<td>
+						<div class="nieuwsbericht-afbeelding">
+							<img src="http://dev12-hetworks.nl/MGMT/backend/img/groenbrief.jpg" alt="" title="" />
+						</div>
+					</td>
+					
+					<td>
+						<div class="nieuwsbericht">
+							<p>
+								Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia						
+								<a href="#">Lees meer</a>
+							</p>
+						</div>
+					</td>
+					</tr>
+				</table>
+					
+
+				</td>
+			</tr>
+			</table>
+			
+			</td>
+		</tr>
+	</table>		
+	
+		
+		
+		<table> 
+			<tr>
+				<td>
+					<p>
+						Als u zich wilt uitschrijven voor deze nieuwsbrief, <a href="#" target="_blank">klikt u hier</a>
+					</p>
+				</td>
+				<td>
+					<table>
+					<tr>
+					<td>
+					
+						Volg ons
+					
+					<a href="#" target="_blank">
+						<img src="http://dev12-hetworks.nl/MGMT/backend/img/facebook.png" alt="" title="" class="right" />
+					</a>
+					<a href="#"target="_blank">
+						<img src="http://dev12-hetworks.nl/MGMT/backend/img/twitter.png" alt="" title="" class="right" />
+					</a>
+					<a href="#" target="_blank">
+						<img src="http://dev12-hetworks.nl/MGMT/backend/img/linkedin.png" alt="" title="" class="right" />
+					</a>
+					</td>
+					</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	
+</body>
+</html>

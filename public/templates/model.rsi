@@ -1,0 +1,27 @@
+<?php
+use Phalcon\Mvc\Model\Validator\Uniqueness as Uniqueness;
+
+class #name# extends \Phalcon\Mvc\Model
+{
+    public function initialize()
+    {
+		#initialize#
+	}
+
+	#standardfunctions#
+
+	#columns#
+	
+
+	#validation#
+ 
+    /**
+     * Independent Column Mapping.
+     */
+    public function columnMap()
+    {
+        return array(
+			#columnmap#
+        );
+    }
+}

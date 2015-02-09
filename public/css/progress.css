@@ -1,0 +1,51 @@
+	progress 
+	{  
+		color:#f3f3f3;
+		background-color: #CCC;  
+		border: 0;  
+		height: 17px;  
+	}  		
+	
+	progress::-webkit-progress-bar {  
+		height: 18px;  
+	}  
+
+	progress::-moz-progress-bar {  
+		color:#f3f3f3;
+		border: 0;  
+		height: 17px;  
+	}  
+	progress[value]::-webkit-progress-value {
+		background-color:blue;
+		background-size: 35px 20px, 100% 100%, 100% 100%;
+	}
+	
+	progress[value]::-moz-progress-bar 
+	{
+		background-image:
+		   -webkit-linear-gradient(-45deg, 
+								   transparent 33%, rgba(0, 0, 0, .1) 33%, 
+								   rgba(0,0, 0, .1) 66%, transparent 66%),
+		   -webkit-linear-gradient(top, 
+								   rgba(255, 255, 255, .25), 
+								   rgba(0, 0, 0, .25)),
+		   -webkit-linear-gradient(left, #09c, #f44);
+		background-size: 35px 20px, 100% 100%, 100% 100%;
+	}
+	
+	progress[value]  {
+	  /* Reset the default appearance */
+	  -webkit-appearance: none;
+		 -moz-appearance: none;
+			  appearance: none;
+
+	  /* Get rid of default border in Firefox. */
+	  border: none;
+
+	  /* Dimensions */
+	  width: 250px;
+	  height: 20px;
+
+	  /* For IE10 */
+	  color: blue; 
+	}
