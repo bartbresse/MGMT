@@ -36,49 +36,31 @@ class Testentity extends \Phalcon\Mvc\Model
 							/**
 							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
 							 */	
+							  public $tekst3;
+							
+							
+							/**
+							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
+							 */	
+							  public $tekst1;
+							
+							
+							/**
+							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
+							 */	
+							  public $tekst2;
+							
+							
+							/**
+							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
+							 */	
 							  public $titel;
 							
 							
 							/**
-							 * @Column(type="VARCHAR( 36 )", length=36, nullable=1)
-							 */	
-							  public $authorid;
-							
-							
-							/**
-							 * @Column(type="TEXT", nullable=0)
-							 */	
-							  public $beschrijving;
-							
-							
-							/**
-							 * @Column(type="DATETIME", nullable=0)
-							 */	
-							  public $lastedit;
-							
-							
-							/**
-							 * @Column(type="INT( 11 )", length=11, nullable=1)
-							 */	
-							  public $testnummer;
-							
-							
-							/**
 							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
 							 */	
-							  public $slug;
-							
-							
-							/**
-							 * @Column(type="DATETIME", nullable=1)
-							 */	
-							  public $creationdate;
-							
-							
-							/**
-							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
-							 */	
-							  public $tags;
+							  public $tekst4;
 							
 							
 
@@ -87,16 +69,6 @@ class Testentity extends \Phalcon\Mvc\Model
     {
 	
 	
-					
-                                            $this->validate(new Uniqueness(
-                                                    array(
-                                                            "field"   => "slug",
-                                                            "message" => "Het veld slug moet uniek zijn."
-                                                    )
-                                              ));
-
-
-                                             
 
         return $this->getMessages();
     }
@@ -106,6 +78,6 @@ class Testentity extends \Phalcon\Mvc\Model
      */
     public function columnMap()
     {
-        return array("id" => "id","titel" => "titel","authorid" => "authorid","beschrijving" => "beschrijving","lastedit" => "lastedit","testnummer" => "testnummer","slug" => "slug","creationdate" => "creationdate","tags" => "tags");
+        return array("id" => "id","tekst3" => "tekst3","tekst1" => "tekst1","tekst2" => "tekst2","titel" => "titel","tekst4" => "tekst4");
     }
 }

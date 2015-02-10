@@ -30,13 +30,13 @@ class MgmtupdateController extends ControllerBase
 	
 	public function indexAction()
         {	
-            
-            $ftp = new MgmtFile\MgmtFTP('www.deappdeveloper.nl','admin','L35GUDoS');
+            /*
+            $ftp = $this->ftp;
             if($ftp->isconnected)
             {
                 
-                $model = file_get_contents('http://www.dutchwebdesigners.com/mgmtcommand/updates/test.volt');
-                $file = '../app/views/test.volt';
+                $model = file_get_contents('http://www.dutchwebdesigners.com/mgmtcommand/updates/test.volt'); 
+                $file = '../app/views/test.volt'; 
                 
             //    file_put_contents($file,$model);
             //    chmod($file,0777); 
@@ -66,8 +66,6 @@ class MgmtupdateController extends ControllerBase
              echo "There was a problem while uploading \n";
             }
 */
-            
-            die();
             
             $this->view->setVar("mgmtform", new MgmtUtils\MgmtForm());
             $this->setaction($this->entity);

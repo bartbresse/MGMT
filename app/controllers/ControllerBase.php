@@ -96,39 +96,39 @@ class ControllerBase extends Phalcon\Mvc\Controller
 
     public function auth($object)
     {
-            $session = $this->session->get('auth');
-            $acl = Acl::findFirst('userid = "'.$session['id'].'" ');			
+        $session = $this->session->get('auth');
+        $acl = Acl::findFirst('userid = "'.$session['id'].'" ');			
     }
 
     public function actionauth($entity)
     {
-            $session = $this->user;
-            if($session['clearance'] < 900 && $entity!='User')
-            {
-                    $actions = array();
-                    $acl = Acl::find('(clearance > "'.$session['clearance'].'" OR userid = "'.$session['id'].'" ) AND request = 1 AND end = 1 AND entity = "'.$entity.'"');
-                    foreach($acl as $action)
-                    {
-                            array_push($actions,$action->actie);		
-                            if(strlen($action->args) > 0)
-                            { $arguments = $action->args.' ';	}
-                    }	
+        $session = $this->user;
+        if($session['clearance'] < 900 && $entity!='User')
+        {
+                $actions = array();
+                $acl = Acl::find('(clearance > "'.$session['clearance'].'" OR userid = "'.$session['id'].'" ) AND request = 1 AND end = 1 AND entity = "'.$entity.'"');
+                foreach($acl as $action)
+                {
+                        array_push($actions,$action->actie);		
+                        if(strlen($action->args) > 0)
+                        { $arguments = $action->args.' ';	}
+                }	
 
-                    //arguments
-                    if(isset($arguments)){ $this->arguments = $arguments; }
-                    //actions  
+                //arguments
+                if(isset($arguments)){ $this->arguments = $arguments; }
+                //actions  
 
-                    return $actions;
-            }
-            elseif($session['clearance'] < 900 && $entity=='User') {
-                    $actions = array('create','deactiveren','sort','export');
-                    if($session['clearance'] < 100) $actions = array();
-                    return $actions;
-            }
-            else
-            {
-                    return $this->actions;
-            }		
+                return $actions;
+        }
+        elseif($session['clearance'] < 900 && $entity=='User') {
+                $actions = array('create','deactiveren','sort','export');
+                if($session['clearance'] < 100) $actions = array();
+                return $actions;
+        }
+        else
+        {
+                return $this->actions;
+        }		
     }
 
     public function removeauth()
@@ -161,160 +161,158 @@ class ControllerBase extends Phalcon\Mvc\Controller
     }
 
 
-	public function search2($args)
+    public function search2($args)
     {
-		//http://docs.phalconphp.com/en/latest/reference/models.html#finding-records
-		//search string
-		if(!isset($args['search']))
-		{
-			$q = $this->request->getQuery('q');
-		}
-		else if($args['search'] != false)
-		{
-			$q = $args['search'];
-		}
-		else
-		{
-			$q = '';
-		}
-		
-		$query = array();
-		$query['conditions'] = '';
-		
-		//search string
-		if(strlen($q) > 1 )
-		{
-			$columns = $args['columns'];
-			$cc = 0;$sq=' ( ';
-			foreach($columns as $column)
-			{
-				$sq .= $column.' Like "%'.$q.'%" ';
-				if(count($columns)-1> $cc){ $sq .= ' OR '; }
-				$cc++;
-			}	
-			$sq .= ' ) ';
-			$query['conditions'] = $sq;
-		}
-		
-		//basic arguments
-		if(isset($args['args']) && strlen($args['args']) > 1)
-		{
-			$sq = $query['conditions']; 
-			if(strlen($sq) > 1){ $sq .= ' AND '; }
-			$sq .= $args['args'];
-			$query['conditions'] = $sq;
-		}
+            //http://docs.phalconphp.com/en/latest/reference/models.html#finding-records
+            //search string
+            if(!isset($args['search']))
+            {
+                    $q = $this->request->getQuery('q');
+            }
+            else if($args['search'] != false)
+            {
+                    $q = $args['search'];
+            }
+            else
+            {
+                    $q = '';
+            }
 
-		//authentication arguments
-		if(strlen($this->arguments) > 1)
-		{
-			$sq = $query['conditions']; 
-			if(strlen($sq) > 1){ $sq .= ' AND '; }	
-			$sq .= $this->arguments;
-			$query['conditions'] = $sq;
-		}		
-		
+            $query = array();
+            $query['conditions'] = '';
 
-		//order by 
-		if(isset($args['order']) && strlen($args['order']) > 1)
-		{
-			//“order�? => “name DESC, status�?
-			$query['order'] = $args['order'];
-		}
+            //search string
+            if(strlen($q) > 1 )
+            {
+                    $columns = $args['columns'];
+                    $cc = 0;$sq=' ( ';
+                    foreach($columns as $column)
+                    {
+                            $sq .= $column.' Like "%'.$q.'%" ';
+                            if(count($columns)-1> $cc){ $sq .= ' OR '; }
+                            $cc++;
+                    }	
+                    $sq .= ' ) ';
+                    $query['conditions'] = $sq;
+            }
 
-		$entity = ucfirst($args['entity']);
-	
-		$items = $entity::find($query);
-		
-		if(isset($args['rows'])){ $rows = $args['rows']; }else{ $rows = 20; }
-	
-		$paginator = new \Phalcon\Paginator\Adapter\Model(
-			array(
-				"data" => $items,
-				"limit"=> $rows,
-				"page" => $this->request->getQuery("p", "int", 1)
-			)
-		);
+            //basic arguments
+            if(isset($args['args']) && strlen($args['args']) > 1)
+            {
+                    $sq = $query['conditions']; 
+                    if(strlen($sq) > 1){ $sq .= ' AND '; }
+                    $sq .= $args['args'];
+                    $query['conditions'] = $sq;
+            }
 
-		// Get the paginated results
-		$items = $paginator->getPaginate();			
-		return $items; 		
-    }
+            //authentication arguments
+            if(strlen($this->arguments) > 1)
+            {
+                    $sq = $query['conditions']; 
+                    if(strlen($sq) > 1){ $sq .= ' AND '; }	
+                    $sq .= $this->arguments;
+                    $query['conditions'] = $sq;
+            }		
+
+
+            //order by 
+            if(isset($args['order']) && strlen($args['order']) > 1)
+            {
+                //“order�? => “name DESC, status�?
+                $query['order'] = $args['order'];
+            }
+
+            $entity = ucfirst($args['entity']);
+
+            $items = $entity::find($query);
+
+            if(isset($args['rows'])){ $rows = $args['rows']; }else{ $rows = 20; }
+
+            $paginator = new \Phalcon\Paginator\Adapter\Model(
+                array(
+                        "data" => $items,
+                        "limit"=> $rows,
+                        "page" => $this->request->getQuery("p", "int", 1)
+                )
+            );
+
+            // Get the paginated results
+            $items = $paginator->getPaginate();			
+            return $items; 		
+        }
 
 	
 	public function updatecolumnorderAction()
 	{
-		$this->view->disable();
-		$status = array('status' => 'false','messages' => array());	
-		if ($this->request->isPost()) 
-		{
-			$post = $this->request->getPost();
-			$columns = array();
-			$column = Column::findFirst('entity = "'.trim($post['entity'],'/').'"');
-			if(!isset($column->id))
-			{
-				$column = new Column(); 
-			}
-			
-			$column->entity = trim($post['entity'],'/');
-			$column->order = $post['order'];
-			
-			if($column->save())
-			{
-				$status['status'] = 'ok';
-			}
-			else
-			{
-				foreach ($column->getMessages() as $message)
-				{
-					echo $message;
-				}
-			}		
-		}
-		echo json_encode($status);	
+            $this->view->disable();
+            $status = array('status' => 'false','messages' => array());	
+            if ($this->request->isPost()) 
+            {
+                $post = $this->request->getPost();
+                $columns = array();
+                $column = MgmtEntity2::findFirst('name = "'.trim($post['entity'],'/').'"');
+                if(!isset($column->id))
+                {
+                        $column = new Column(); 
+                }
+
+                $column->entity = trim($post['entity'],'/');
+                $column->order = $post['order'];
+
+                if($column->save())
+                {
+                    $status['status'] = 'ok';
+                }
+                else
+                {
+                    foreach ($column->getMessages() as $message)
+                    {
+                            echo $message;
+                    }
+                }		
+            }
+            echo json_encode($status);	
 	}
 	
 	public function updatecolumnAction()
 	{
-		$this->view->disable();
-		$status = array('status' => 'false','messages' => array());	
-		if ($this->request->isPost()) 
-		{
-			$post = $this->request->getPost();
-	
-		
-	
-			$columns = array();
-			$column = Column::findFirst('entity = "'.trim($this->entity,'/').'"');
-			if(!isset($column->id))
-			{
-				$column = new Column(); 
-			}
-			$column->entity = trim($this->entity,'/');
+            $this->view->disable();
+            $status = array('status' => 'false','messages' => array());	
+            if ($this->request->isPost()) 
+            {
+                $post = $this->request->getPost();
 
-			//save standard columns 
-			foreach ($post as $key => $value)
-			{
-				if($key != 'entity' && $value > 0)
-				{ 
-					 array_push($columns,$key);
-				}				
-			}
-	
-			$column->columns = $columns;
-			if($column->save())
-			{
-				$status['status'] = 'ok';
-			}
-			else
-			{
-				foreach ($column->getMessages() as $message)
-				{
-					echo $message;
-				}
-			}		
-		}
-		echo json_encode($status);	
+                $columns = array();
+                $column = MgmtEntity2::findFirst('name = "'.trim($this->entity,'/').'"');
+                if(!isset($column->id))
+                {
+                   $column = new MgmtEntity2(); 
+                }
+                $column->entity = trim($this->entity,'/');
+
+                //save standard columns 
+                foreach ($post as $key => $value)
+                {
+                    if($key != 'entity' && $value > 0)
+                    { 
+                             array_push($columns,$key);
+                    }				
+                }
+
+                $column->columns = $columns;
+                if($column->save())
+                {
+                    $status['status'] = 'ok';
+                }
+                else
+                {
+                    foreach ($column->getMessages() as $message)
+                    {
+                            echo $message;
+                    }
+                }		
+            }
+            echo json_encode($status);	
 	}
 
     public function search($columns,$entity,$args = false)
@@ -494,55 +492,11 @@ class ControllerBase extends Phalcon\Mvc\Controller
 		return $query;
 	}
 	
-	
-	
-	
-	
-	
-
 	protected function csv($entities,$columns,$entityname)
 	{
-		$string = '';
-		//table headers
-		$cc=0;
-		$keys = array();
-		$row = array();		
-
-		$row[0] = array();
-		foreach($entities->items[0] as $key => $value)
-		{
-			if(in_array($key,$columns))
-			{ 
-				array_push($keys,$key);
-				array_push($row[0],$key);
-			}
-		}
-
-		$string .= '\n';
-		$cc=1;
-		
-		foreach($entities->items as $entity)
-		{
-			$row[$cc] = array();
-			foreach($keys as $key)
-			{				
-				array_push($row[$cc],$entity->$key);					
-			}
-			$cc++;
-		}
-
-		$filename = '../../uploads/exports/'.$entityname.date('Y-m-d').'.csv';			
-		if($f = fopen($filename, 'w'))
-		{
-			fwrite($f,$string);
-			foreach ($row as $fields) 
-			{
-				fputcsv($f,$fields,';');
-			}
-			fclose($f);
-		}
-		return 'http://'.$_SERVER['HTTP_HOST'].'/MGMTx/uploads/exports/'.$entityname.date('Y-m-d').'.csv';
-	}
+            $csv = new MgmtFile\MgmtCSV();
+            return $csv->generate($entities, $columns, $entityname);
+    	}
 	
 	public function getfiles($entity,$id)
 	{
@@ -589,11 +543,12 @@ class ControllerBase extends Phalcon\Mvc\Controller
 		if(!$entity){ $entity = $this->entity; }	
 	
 		//ordered columns zorgt voor de volgorde van de kolommen	
-		$table = Column::findFirst('entity = "'.$entity.'"');
+		$table = MgmtEntity2::findFirst('name = "'.$entity.'"');
 		if(!$table)
 		{
-			$table = new Column();
+                    $table = new MgmtEntity2();
 		}
+                
 		if(isset($table->columns)){ $columns = $table->orderedcolumns;	 }else{ $columns = array(); }
 		$this->view->setVar("columns", $columns);
 	
@@ -675,18 +630,18 @@ class ControllerBase extends Phalcon\Mvc\Controller
 	
 	public function updatesettingsAction()
 	{
-		$this->view->disable();
-		$status = $this->status;
-		if($this->request->isPost()) 
-		{
-			$post = $this->post;
-			$entity = MgmtEntity2::findFirst('name = "'.$this->entity.'"');	
-			if($entity)
-			{
-				$entity->$post['key'] = $post['value'];
-			}	
-		}
-		echo json_encode($status);
+            $this->view->disable();
+            $status = $this->status;
+            if($this->request->isPost()) 
+            {
+                $post = $this->post;
+                $entity = MgmtEntity2::findFirst('name = "'.$this->entity.'"');	
+                if($entity)
+                {
+                        $entity->$post['key'] = $post['value'];
+                }	
+            }
+            echo json_encode($status);
 	}
 }
 

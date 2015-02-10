@@ -42,7 +42,7 @@ class MgmtEntity
 	
 	public function addLine($line)
 	{
-            $line->name = strtolower(preg_replace("/[^a-zA-Z]/", "", $line->name));
+            $line->name = strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $line->name));
 
             if($line->show == 1)
             {

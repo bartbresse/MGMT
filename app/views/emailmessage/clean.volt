@@ -1,21 +1,21 @@
 {{ content() }}
 
 	<header>
-		<? if(count($indexemailmessages->items) > 39){ ?>
-		<div class="pull-right">
-			<ul class="pagination no-margin number-of-rows">
-				<li class="active">
-					<a>20</a>
-				</li>
-				 <li>
-					<a>40</a>
-				</li>
-				 <li>
-					<a>80</a>
-				</li>
-			</ul>
-		</div>
-		<? } ?>			       		
+            <? if(count($indexemailmessages->items) > 39){ ?>
+            <div class="pull-right">
+                <ul class="pagination no-margin number-of-rows">
+                    <li class="active">
+                       <a>20</a>
+                    </li>
+                    <li>
+                       <a>40</a>
+                    </li>
+                    <li>
+                       <a>80</a>
+                    </li>
+                </ul>
+            </div>
+            <? } ?>			       		
 	</header>
 	<div>
    <? if(isset($indexemailmessages->items) && count($indexemailmessages->items) > 0){ ?>
@@ -46,18 +46,18 @@
 						}
 						?>
 						<td id="bewerken" style="width:100px;">
-						<?	if(in_array('edit',$actions))
-							{
-								?><a href="<?php echo  $this->url->get("emailmessage/view&id=".$emailmessage->id);?>"><i class="fa fa-search"></i></a><?
-							}
-							if(in_array('edit',$actions))
-							{
-								?><a href="<?php echo  $this->url->get('emailmessage/edit&id='.$emailmessage->id);?>"><i class="fa fa-edit"></i></a><?
-							}
-							if(in_array('delete',$actions))
-							{
-								?><a onclick="del('<?=$emailmessage->id;?>','<? if(isset($emailmessage->titel)){ echo $emailmessage->titel; } ?>');"><i class="fa fa-trash-o"></i></a><?
-							} ?>
+                                            <?	if(in_array('edit',$actions))
+                                                    {
+                                                            ?><a href="<?php echo  $this->url->get("emailmessage/view&id=".$emailmessage->id);?>"><i class="fa fa-search"></i></a><?
+                                                    }
+                                                    if(in_array('edit',$actions))
+                                                    {
+                                                            ?><a href="<?php echo  $this->url->get('emailmessage/edit&id='.$emailmessage->id);?>"><i class="fa fa-edit"></i></a><?
+                                                    }
+                                                    if(in_array('delete',$actions))
+                                                    {
+                                                            ?><a onclick="del('<?=$emailmessage->id;?>','<? if(isset($emailmessage->titel)){ echo $emailmessage->titel; } ?>');"><i class="fa fa-trash-o"></i></a><?
+                                                    } ?>
 					   </td>
 					 </tr><?		
 					}

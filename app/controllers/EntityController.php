@@ -142,12 +142,8 @@ class EntityController extends ControllerBase
 				'min' => 2
 			)));
 			
-                        
-                        
-                        
 			$messages = $validation->validate($post);
 			
-                        
                         if(count($messages))
 			{
 				for($i=0;$i<count($messages);$i++){
@@ -459,15 +455,7 @@ class EntityController extends ControllerBase
 		$this->view->setVar("mgmtoptions",$this->getMGMTcolumns());
 		$this->view->setVar("options",$this->getOptions());
 		
-		$form = new Form();
 		$session = $this->session->get('auth');
-		$bericht = Bericht::findFirst();
-		if(!isset($bericht->id))
-		{
-			$bericht = new Bericht();
-			$bericht->userid = $session['id'];
-		}
-		
 		$form = new Form();
 		$entity = new MgmtEntity2();
 		$cm = $entity->columnMap();

@@ -92,7 +92,52 @@ class MgmtEntity2 extends \Phalcon\Mvc\Model
 	public $inlinedit;
 	
 	public $systementity;
-	
+        public $orderedcolumns;
+        
+        public function ordercolumns()
+	{
+		$columns = $this->columns;
+		$order = $this->order;
+		if(is_array($order) && count($order) > 0)
+		{
+			$orderedcolumns = array();	
+			foreach($order as $ordered)
+			{
+				if(in_array($ordered,$columns))
+				{
+					array_push($orderedcolumns,$ordered);
+				}
+			}
+			$this->orderedcolumns = $orderedcolumns;
+		}
+		else
+		{
+			$this->orderedcolumns = $columns;
+		}
+	}	
+		
+	public function getallorderedcolumns($columns)
+	{
+		$order = $this->order;
+		if(count($columns) == count($order))
+		{
+			return $order;
+		}
+		return $columns;
+	}	
+			
+	public function beforeSave()
+	{
+		$this->order = serialize ( $this->order );
+		$this->columns = serialize ( $this->columns );
+	}
+
+	public function afterFetch()
+	{
+		$this->order = unserialize ( $this->order );
+		$this->columns = unserialize ( $this->columns );
+		$this->ordercolumns();
+	}		
 	
 	public function validation()
 	{

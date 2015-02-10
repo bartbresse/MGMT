@@ -46,7 +46,7 @@
 			</a>
 			<ul id="account-menu" class="dropdown-menu account" role="menu">
 				<li role="presentation" class="account-picture">
-					<img src="img/2.jpg" alt="">
+					
 				   <?	echo $user->firstname.' '.$user->insertion.' '.$user->lastname;		?>
 				</li>
 				<?/*

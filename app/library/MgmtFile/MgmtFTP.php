@@ -3,6 +3,8 @@ namespace MgmtFile;
 
 /**
  *  Wrapper handles secure ftp traffic to update the system with a filezilla like messages
+ * 
+ *  injected in the index.php file
  */
 class MgmtFTP
 {
@@ -32,7 +34,7 @@ class MgmtFTP
         // login with username and password
         $result = ftp_login($this->connection,$user,$password); 
         
-        if ((!$this->connection) || (!$result)) 
+        if((!$this->connection) || (!$result)) 
         { 
             $this->setStatus("FTP connection has failed! Attempted to connect to $host for user $user");
         } 
@@ -42,6 +44,9 @@ class MgmtFTP
             $this->setStatus("Connected to $host, for user $user");
         }
         
+        /**
+         * Make sure a passive connection is possible on your FTP server or comment this line out.
+         */
          ftp_pasv($this->connection, false);
     }
     

@@ -41,12 +41,13 @@ try{
 	);
 
 	$loader->registerNamespaces(
-		array( "dbx"    => __DIR__ .  '/../app/library/Dropbox',
+                     array("dbx"    => __DIR__ .  '/../app/library/Dropbox',
 			   'Tartan' => __DIR__ . '/../app/library/Tartan',
 			   'MGMTForm' => __DIR__ . '/../app/library/MGMTForm',
 			   'MgmtEntity' => __DIR__ . '/../app/library/MgmtEntity',
 			   'MgmtFile' => __DIR__ . '/../app/library/MgmtFile',
 			   'MgmtUtils' => __DIR__ . '/../app/library/MgmtUtils',
+                           'MgmtEmail' => __DIR__ . '/../app/library/MgmtEmail',
 			   'Phalcon\Forms' => __DIR__ . '/../app/library/MgmtElements')); 
 
 	// Register some classes
@@ -84,7 +85,7 @@ try{
 
 		return $dispatcher;
 	});
-	
+	 
 	/*
 		Connect to dropbox
 	*/
@@ -93,6 +94,21 @@ try{
 	});
 	
 	
+        /**
+         *  MGMT ftp handler
+         */
+        $di->set('ftp', function() use ($config){
+		return new MgmtFile\MgmtFTP($config->ftp->host, 
+                                            $config->ftp->user, 
+                                            $config->ftp->password, 
+                                            $config->ftp->port);
+	}); 
+	
+        /**
+         *  MGMT IMAP handler
+         */
+        
+        
 	/**
 	*  Mandrill email client
 	*/

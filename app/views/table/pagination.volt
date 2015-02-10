@@ -1,5 +1,4 @@
-<?php
-if($$controller->total_pages > 1){  ?>
+<?php if($$controller->total_pages > 1){  ?>
 	<ul class="pagination no-margin">
 		<li><a href="<?php echo  $this->url->get($model."/"); ?>"> << </a></li>
 		<li><a href="<?php echo  $this->url->get($model."/"); ?>?p=<?=$$controller->before; ?>"> < </a></li>
@@ -12,4 +11,4 @@ if($$controller->total_pages > 1){  ?>
 
 		<li>&nbsp;&nbsp;Rij <?=($$controller->current * 20)-20;?> tot <?=($$controller->current * 20);?> van de <?=$$controller->total_items;?></li>
 	</ul>	
-	<? } ?>
+	<?php } ?>
