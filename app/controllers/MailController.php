@@ -24,73 +24,49 @@ class MailController extends ControllerBase
 
     public function indexAction()
     {		
-        
-        require_once 'System.php';
-        var_dump(class_exists('System'));
-
-        require_once 'Mail.php';
-        var_dump(class_exists('Mail'));
-        
-        die();
-        /**
-         * host = 'www.deappdeveloper.nl'
-user = 'admin'
-password = 'L35GUDoS'
-port = 21
-         */
-      //  $imap = new MgmtEmail\MgmtIMAP('{localhost:143}INBOX','admin','L35GUDoS');
-        $user = 'admin';
-        $password = 'L35GUDoS';
-        
-     //   $mbox = imap_open("{localhost:143}INBOX", $user, $password);
-
-        // To connect to a POP3 server on port 110 on the local server, use:
-     //   $mbox = imap_open ("{localhost:110/pop3}INBOX", $user, $password);
-
-        // To connect to an SSL IMAP or POP3 server, add /ssl after the protocol
-        // specification:
-     //   $mbox = imap_open ("{localhost:993/imap/ssl}INBOX", $user, $password);
-
-        // To connect to an SSL IMAP or POP3 server with a self-signed certificate,
-        // add /ssl/novalidate-cert after the protocol specification:
-        $mbox = imap_open ("{localhost:995/pop3/ssl/novalidate-cert}", $user, $password);
-        
-        echo "<h1>Mailboxes</h1>\n";
-        $folders = imap_listmailbox($mbox, "{localhost:995/pop3/ssl/novalidate-cert}", "*");
-
-        if ($folders == false) {
-            echo "Call failed<br />\n";
-        } else {
-            foreach ($folders as $val) {
-                echo $val . "<br />\n";
-            }
-        }
-
-        echo "<h1>Headers in INBOX</h1>\n";
-        $headers = imap_headers($mbox);
-
-        if ($headers == false) {
-            echo "Call failed<br />\n";
-        } else {
-            foreach ($headers as $val) {
-                echo $val . "<br />\n";
-            }
-        }
-
-        imap_close($mbox);
-        
-        echo PEAR_INSTALL_DIR;
-        require_once "Mail.php";
-        
-       // echo phpinfo();
+        $this->email->download();
         
         die();
         
+        //$mail = new MgmtEmail\MgmtSMTP('www.deappdeveloper.nl', 'admin', 'L35GUDoS');
         $this->setaction();
         $this->setcolumns();
         $entity = $this->search2(array('columns' => array_keys(MgmtEmail::columnMap()),'entity' => $this->entity)); 
         if(count($entity) > 0){ $this->view->setVar("emails", $entity); }
     }
+    
+    public function inboxAction()
+    {
+        $this->setaction();
+        $this->setcolumns();
+        $entity = $this->search2(array('columns' => array_keys(MgmtEmail::columnMap()),'entity' => $this->entity,'arguments' => 'status = 1')); 
+        if(count($entity) > 0){ $this->view->setVar("emails", $entity); }
+    }
+    
+    public function spamAction()
+    {
+        $this->setaction();
+        $this->setcolumns();
+        $entity = $this->search2(array('columns' => array_keys(MgmtEmail::columnMap()),'entity' => $this->entity,'arguments' => 'status = 5')); 
+        if(count($entity) > 0){ $this->view->setVar("emails", $entity); }      
+    }
+    
+    public function conceptAction()
+    {
+        $this->setaction();
+        $this->setcolumns();
+        $entity = $this->search2(array('columns' => array_keys(MgmtEmail::columnMap()),'entity' => $this->entity,'arguments' => 'status = 3')); 
+        if(count($entity) > 0){ $this->view->setVar("emails", $entity); }        
+    }
+    
+    public function sentAction()
+    {
+        $this->setaction();
+        $this->setcolumns();
+        $entity = $this->search2(array('columns' => array_keys(MgmtEmail::columnMap()),'entity' => $this->entity,'arguments' => 'status = 100')); 
+        if(count($entity) > 0){ $this->view->setVar("emails", $entity); }
+    }
+    
 
     public function selectsenderAction()
     {

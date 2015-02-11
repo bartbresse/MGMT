@@ -23,34 +23,29 @@
 <body>
     <form>
         <h2>Application configuration</h2>
-        
         <h3>database</h3>
         
         <div class="form-group has-success has-feedback">
         <label class="control-label" for="inputSuccess4">database host</label>
         <input type="text" class="form-control" id="inputSuccess4" aria-describedby="inputSuccess4Status">
-       
         <span id="inputSuccess4Status" class="sr-only">(success)</span>
         </div>
         
         <div class="form-group has-success has-feedback">
         <label class="control-label" for="inputSuccess4">database username</label>
         <input type="text" class="form-control" id="inputSuccess4" aria-describedby="inputSuccess4Status">
-      
         <span id="inputSuccess4Status" class="sr-only">(success)</span>
         </div>
         
         <div class="form-group has-success has-feedback">
         <label class="control-label" for="inputSuccess4">database password</label>
         <input type="text" class="form-control" id="inputSuccess4" aria-describedby="inputSuccess4Status">
-  
         <span id="inputSuccess4Status" class="sr-only">(success)</span>
         </div>
         
         <div class="form-group has-success has-feedback">
         <label class="control-label" for="inputSuccess4">database name</label>
         <input type="text" class="form-control" id="inputSuccess4" aria-describedby="inputSuccess4Status">
-        
         <span id="inputSuccess4Status" class="sr-only">(success)</span>
         </div>
         
@@ -62,7 +57,7 @@
         <span id="inputSuccess4Status" class="sr-only">(success)</span>
         </div>
         
-         <div class="form-group has-success has-feedback">
+        <div class="form-group has-success has-feedback">
         <label class="control-label" for="inputSuccess4">user</label>
         <input type="text" class="form-control" id="inputSuccess4" aria-describedby="inputSuccess4Status">
         <span id="inputSuccess4Status" class="sr-only">(success)</span>
@@ -88,16 +83,19 @@
         <span id="inputSuccess4Status" class="sr-only">(success)</span>
         </div>
     </form>
-    
-
     <h2>Application dependencies</h2>
     <p>We would like to tell you that it takes 5 minutes but that is sometimes simply not true.
         In order for the system to function we need the following dependencies to be installed on your server:</p>
-    <ul>
-        <li>THE PHALCON FRAMEWORK</li>
-        <li>PHP_IMAP support</li>
-        <li>PEAR MAIL</li>
-    </ul>
+    
+    
+    <table>
+        <tr><th>dependency</th><th>install guide linux</th></tr>
+        <tr><td>THE PHALCON FRAMEWORK</td><td>phalconphp.com</td></tr>
+        <tr><td>PHP_IMAP support</td><td>directadmin: PHP_IMAP recompile</td></tr>
+        <tr><td>PEAR MAIL</td><td>command: pear install Mail-1.2.0 </td></tr>
+        <tr><td>PEAR MAIL</td><td>command: pear install Net_SMTP </td></tr>
+    </table>
+    
 </body>
 </html>
 

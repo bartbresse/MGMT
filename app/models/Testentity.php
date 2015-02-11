@@ -24,51 +24,47 @@ class Testentity extends \Phalcon\Mvc\Model
         $this->lastedit = date('Y-m-d H:i:s');
     }
 
-	/**
+    /**
      * @Primary
      * @Identity
      * @Column(type="string", length=36, nullable=false)
      */
     public $id;
-	
-	
-	
-							/**
-							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
-							 */	
-							  public $tekst3;
-							
-							
-							/**
-							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
-							 */	
-							  public $tekst1;
-							
-							
-							/**
-							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
-							 */	
-							  public $tekst2;
-							
-							
-							/**
-							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
-							 */	
-							  public $titel;
-							
-							
-							/**
-							 * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
-							 */	
-							  public $tekst4;
+    
+    /**
+     * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
+     */	
+      public $tekst3;
+
+
+    /**
+     * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
+     */	
+      public $tekst1;
+
+
+    /**
+     * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
+     */	
+      public $tekst2;
+
+
+    /**
+     * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
+     */	
+      public $titel;
+
+
+    /**
+     * @Column(type="VARCHAR( 255 )", length=255, nullable=0)
+     */	
+      public $tekst4;
 							
 							
 
 	
     public function validation()
     {
-	
-	
 
         return $this->getMessages();
     }

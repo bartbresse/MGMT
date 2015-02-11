@@ -53,7 +53,8 @@ try{
 	// Register some classes
 	$loader->registerClasses(
 		array(
-			"FileUpload" => __DIR__ . $config->application->libraryDir.'/MySQLTableAdapter.php'
+                    "FileUpload" => __DIR__ . $config->application->libraryDir.'/MySQLTableAdapter.php',
+                    "MgmtEmail" => __DIR__ . $config->application->libraryDir.'/MgmtEmail.php'
 		)
 	);		   
 			   
@@ -105,9 +106,11 @@ try{
 	}); 
 	
         /**
-         *  MGMT IMAP handler
+         *  MGMT Email handler
          */
-        
+        $di->set('email', function() use ($config){
+		return new MgmtEmail($config->mail);
+	});
         
 	/**
 	*  Mandrill email client
@@ -115,6 +118,8 @@ try{
 	$di->set('mandrill', function() use ($config){
 		return new Tartan\Mandrill($config->mail->apikey);
 	});
+        
+        
 	
 	/**
 	 * We register the events manager
